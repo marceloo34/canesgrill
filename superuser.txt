@@ -1,0 +1,3 @@
+usuário: senac
+email: senac@churras.com
+senha: Senac2023
