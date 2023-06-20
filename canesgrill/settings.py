@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pessoas',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,11 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'templates/static',    
 ]
+
+# Media
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
