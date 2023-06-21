@@ -38,3 +38,28 @@ git remote add origin << endereço https do respositório no github >> - adicion
 6- Habilitar host 
 
 7- code.
+
+
+---------------
+CASO NÃO TENHA BANCO DE DADOS CRIADO (ambiente sem dados)
+
+- olhar configurações no arquivo settings.py e copiar as informações para criar o banco de dados.
+- após o banco criado rodar comando abaixo para criar as tabelas do projeto
+	python manage.py migrate
+-criar super user no Django-admin
+	python manage.py createsuperuser
+
+
+
+CASO TENHA O DUMP DO BANCO DE DADOS (ambiente com dados)
+
+- criar o banco no admin do banco
+- importar o dump
+
+
+
+
+
+
+
+
