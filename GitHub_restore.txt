@@ -1,0 +1,40 @@
+Se a máquina que for receber o restore não tiver o git instalado, será necessário fazer a instalação e configuração do git global. Conforme abaixo:
+
+git config --global user.name "user_name" - (user name do github)
+git config --global user.email "email_git" - (email do github)
+## para credenciais em cache
+git config --global credentials.helper cache
+git config --global credentials.helper store
+
+---- COMANDOS ÚTEIS ----
+git init 		- Inicia o git na pasta do projeto
+git branch -M main 	- Muda o nome da branch para 'main'
+git remote add origin << endereço https do respositório no github >> - adiciona o site remoto (github)
+
+
+
+
+1- preparar pasta do projeto para restore do repositório
+
+2- para clonar o github
+	git clone << endereço do github >>
+
+3- criar o venv
+	python -m venv venv
+
+4- ativar ambiente virtual
+	4.1- entrar na pasta venv/Scripts
+		cd venv
+		cd Scripts
+	4.2- ativar o venv
+		activate
+	4.3- sair das pastas (voltar pra pasta raiz)
+		cd ..
+		cd ..
+
+5- instalar as bibliotecas (pelo arquivo requirements.txt)
+	pip install -r requirements.txt
+
+6- Habilitar host 
+
+7- code.
