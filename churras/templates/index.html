@@ -11,13 +11,14 @@
         {% for prato in lista_pratos %}
         <div class="col-12 col-sm-6 col-lg-4">
             <div class="single-best-receipe-area mb-30">
-                {% if prato.foto_prato %}
-                    <img src="{{ prato.foto_prato.url }}" alt="">
-                {% else %}
-                    <img src="{% static 'img/bg-img/foto_receita.png' %}" alt="">
-                {% endif %}
+                
                 <div class="receipe-content">
                     <a href="{% url 'churrasco' prato.id %}">
+                        {% if prato.foto_prato %}
+                            <img src="{{ prato.foto_prato.url }}" alt="">
+                        {% else %}
+                            <img src="{% static 'img/bg-img/foto_receita.png' %}" alt="">
+                        {% endif %}
                         <h5>{{ prato.nome_prato }}</h5>
                         <h6>{{ prato.categoria }}</h6>
                     </a>
