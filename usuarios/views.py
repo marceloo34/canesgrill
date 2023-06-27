@@ -94,4 +94,6 @@ def dashboard(request):
 
 
 def logout(request):
-    ...
+    auth.logout(request)
+    print('Você realizou o logout')
+    return redirect('index')
