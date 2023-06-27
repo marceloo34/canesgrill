@@ -22,11 +22,11 @@
                                 <div class="col-12 col-lg-12">
                                     {% csrf_token %}
                                     <label for="email"><b>E-mail</b></label>
-                                    <input type="text" id="email" class="form-control" name="email" placeholder="Informe seu e-mail">
+                                    <input type="email" id="email" class="form-control" name="email" placeholder="Informe seu e-mail" required>
                                 </div>
                                 <div class="col-12 col-lg-12">
                                     <label for="senha"><b>Senha</b></label>
-                                    <input type="password" id="senha" class="form-control" name="senha" placeholder="Informe sua senha">
+                                    <input type="password" id="senha" class="form-control" name="senha" placeholder="Informe sua senha" required>
                                 </div>
                                 <div class="col-12 text-center">
                                     <button type="submit" class="btn btn-success">
