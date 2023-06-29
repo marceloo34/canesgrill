@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
+from random import randint
+from churras.models import Prato
 
 # Create your views here.
 '''
@@ -16,7 +18,7 @@ urlpatterns = [
 def cadastro(request):
     if request.method == 'POST':
         
-        nome = request.POST['nome_completo']
+        nome = request.POST['nome_completo'].title()
         email = request.POST['email']
         senha = request.POST['senha']
         senha2 = request.POST['senha2']
@@ -43,10 +45,11 @@ def cadastro(request):
             return redirect('cadastro')
         
         if User.objects.filter(username=user_name).exists():
-            print('Username já cadastrado.')
-            return redirect('cadastro')
-        
-        
+            print(f'Username {user_name} já cadastrado.')
+            user_name = f'{user_name}{randint(1000, 9999)}'
+            pass
+
+
         if len(nome_completo) > 1:
             primeiro_nome = nome_completo[0]
             segundo_nome = nome_completo[-1]
@@ -56,7 +59,6 @@ def cadastro(request):
         
         user = User.objects.create_user(username=user_name, email=email, password=senha, first_name=primeiro_nome, last_name=segundo_nome)
         user.save()
-        print(user_name)
         print('Usuário cadastrado com sucesso.')
         return redirect('login')
     
@@ -64,6 +66,9 @@ def cadastro(request):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    
     if request.method == 'POST':
         # print(f'POST: {request.POST}')
         
@@ -90,10 +95,39 @@ def login(request):
 
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    if request.user.is_authenticated:
+        pratos = Prato.objects.filter(publicado=True).order_by('-date_prato')
+    
+        contexto = {
+        'lista_pratos': pratos,
+    }
+        
+        return render(request, 'dashboard.html', contexto)
+    
+    return redirect('index')
 
 
 def logout(request):
     auth.logout(request)
     print('Você realizou o logout')
+    return redirect('index')
+
+
+def cria_prato(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            nome_prato = request.POST['nome_prato'].strip().title()
+            ingredientes = request.POST['ingredientes']
+            modo_preparo = request.POST['modo_preparo']
+            tempo_preparo = request.POST['tempo_preparo']
+            rendimento = request.POST['rendimento']
+            categoria = request.POST['categoria']
+            foto_prato = request.FILES['foto_prato']
+            
+            
+        
+        
+        
+        
+        return render(request, 'cria_prato.html')
     return redirect('index')
