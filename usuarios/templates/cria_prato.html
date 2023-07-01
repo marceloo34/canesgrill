@@ -18,56 +18,57 @@
             <div class="col-12">
                 <p>Todos os campos são obrigatórios</p>
                 <div class="contact-form-area">
-                    <form action="{% url 'cria_prato' %}" method="post" enctype="multipart/form-data"></form>
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-12 col-lg-12">
-                            <label for="nome_prato">
-                                <b>Titulo do Prato</b>
-                            </label>
-                            <input type="text" id="nome_prato" class="form-control" name="nome_prato", placeholder="Maminha no Limão" required>
+                    <form action="{% url 'cria_prato' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <label for="nome_prato">
+                                    <b>Titulo do Prato</b>
+                                </label>
+                                <input type="text" id="nome_prato" class="form-control" name="nome_prato", placeholder="Maminha no Limão" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="ingredientes">
+                                    <b>Ingredientes</b>
+                                </label>
+                                <textarea class="form-control" name="ingredientes" id="ingredientes" cols="30" rows="10" placeholder="Ex. Maminha,&#10;3 Limões,&#10;Sal e temperos" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label for="modo_preparo">
+                                    <b>Modo de Preparo</b>
+                                </label>
+                                <textarea class="form-control" name="modo_preparo" id="modo_preparo" cols="30" rows="10" placeholder="Ex. Corte saboroso, temperado com lima, sal e diversos temperos, marinando para obter o máximo de suculência." required></textarea>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <label for="tempo_preparo">
+                                    <b>Tempo de Preparo (Minutos)</b>
+                                </label>
+                                <input type="number" class="form-control" name="tempo_preparo", id="tempo_preparo" placeholder="Ex.: 2" required>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <label for="rendimento">
+                                    <b>Rendimento</b>
+                                </label>
+                                <input type="text" class="form-control" name="rendimento" id="rendimento" placeholder="Ex.: Serve 2 Pessoas" required>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <label for="categoria">
+                                    <b>Categoria do Prato</b>
+                                </label>
+                                <input type="text" class="form-control" name="categoria" id="categoria" placeholder="Ex.: Churrasco" required>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <label for="foto_prato">
+                                    <b>Foto</b>
+                                </label>
+                                <input type="file" class="form-control" name="foto_prato" id="foto_prato" required>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button class="btn btn-success mt-30" type="submit">Criar seu Prato</button>
+                                <button class="btn btn-danger mt-30" onclick="cancelar()">Cancelar</button>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <label for="ingredientes">
-                                <b>Ingredientes</b>
-                            </label>
-                            <textarea class="form-control" name="ingredientes" id="ingredientes" cols="30" rows="10" placeholder="Ex. Maminha,&#10;3 Limões,&#10;Sal e temperos" required></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label for="modo_preparo">
-                                <b>Modo de Preparo</b>
-                            </label>
-                            <textarea class="form-control" name="modo_preparo" id="modo_preparo" cols="30" rows="10" placeholder="Ex. Corte saboroso, temperado com lima, sal e diversos temperos, marinando para obter o máximo de suculência." required></textarea>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label for="tempo_preparo">
-                                <b>Tempo de Preparo (Minutos)</b>
-                            </label>
-                            <input type="number" class="form-control" name="tempo_preparo", id="tempo_preparo" placeholder="Ex.: 2" required>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label for="rendimento">
-                                <b>Rendimento</b>
-                            </label>
-                            <input type="text" class="form-control" name="rendimento" id="rendimento" placeholder="Ex.: Serve 2 Pessoas" required>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label for="categoria">
-                                <b>Categoria do Prato</b>
-                            </label>
-                            <input type="text" class="form-control" name="categoria" id="categoria" placeholder="Ex.: Churrasco" required>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label for="foto_prato">
-                                <b>Foto</b>
-                            </label>
-                            <input type="file" class="form-control" name="foto_prato" id="foto_prato" required>
-                        </div>
-                        <div class="col-12 text-center">
-                            <button class="btn delicious-btn mt-30" type="submit">Criar seu Prato</button>
-                            <button class="btn btn-danger mt-30" onclick="cancelar()">Cancelar</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

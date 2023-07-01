@@ -1,8 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib import auth
+from django.contrib import auth, messages
 from random import randint
 from churras.models import Prato
+
+
+def campo_vazio(campo):
+    return not campo.strip()
+
+
+def senhas_diferentes(senha, senha2):
+    return senha != senha2
 
 # Create your views here.
 '''
@@ -26,28 +34,38 @@ def cadastro(request):
         user_name = nome.replace(' ', '')
         user_name = user_name.lower()
         
-        if not nome.strip():
-            print('O campo Nome Completo não pode ficar em branco.')
+        if campo_vazio(nome):
+            messages.error(request, 'O campo Nome Completo não pode ficar em branco.')
             nome = nome.strip()
             return redirect('cadastro')
         
-        if not email.strip():
-            print('O campo Email não pode ficar em branco.')
+        if campo_vazio(email):
+            messages.error(request, 'O campo Email não pode ficar em branco.')
             email = email.strip()
             return redirect('cadastro')
         
-        if senha != senha2 or not senha.strip() or not senha2.strip():
-            print('As senha não são iguais ou uma delas está em branco.')
+        
+        
+        if senhas_diferentes(senha, senha2) or campo_vazio(senha) or campo_vazio(senha2):
+            messages.error(request, 'As senha não são iguais ou uma delas está em branco.')
             return redirect('cadastro')
         
         if User.objects.filter(email=email).exists():
-            print('Email já cadastrado.')
+            messages.error(request, 'Email já cadastrado.')
             return redirect('cadastro')
         
         if User.objects.filter(username=user_name).exists():
-            print(f'Username {user_name} já cadastrado.')
-            user_name = f'{user_name}{randint(1000, 9999)}'
-            pass
+            user_name2 = f'{user_name}{randint(1000, 9999)}'
+            if len(nome_completo) > 1:
+                primeiro_nome = nome_completo[0]
+                segundo_nome = nome_completo[-1]
+            else:
+                primeiro_nome = nome_completo[0]
+                segundo_nome = ''
+            user = User.objects.create_user(username=user_name2, email=email, password=senha, first_name=primeiro_nome, last_name=segundo_nome)
+            user.save()
+            messages.info(request, f'Usuário {user_name} já cadastrado. Foi gerado o Usuário {user_name2} automaticamente.')
+            return redirect('login')
 
 
         if len(nome_completo) > 1:
@@ -59,7 +77,7 @@ def cadastro(request):
         
         user = User.objects.create_user(username=user_name, email=email, password=senha, first_name=primeiro_nome, last_name=segundo_nome)
         user.save()
-        print('Usuário cadastrado com sucesso.')
+        messages.success(request, f'Usuário {user_name} cadastrado com sucesso.')
         return redirect('login')
     
     return render(request, 'cadastro.html')
@@ -76,7 +94,7 @@ def login(request):
         senha = request.POST['senha']
         
         if email == '' or senha == '':
-            print('Os campos de email e senha não podem ficar em branco.')
+            messages.error(request, 'Os campos de email e senha não podem ficar em branco.')
             return redirect('login')
         
         if User.objects.filter(email=email).exists():
@@ -85,10 +103,10 @@ def login(request):
             
             if user is not None:
                 auth.login(request, user)
-                print('Login realizado com sucesso.')
-                return render(request, 'dashboard.html')
+                messages.success(request, 'Login realizado com sucesso.')
+                return redirect('dashboard')
 
-        print('Usuário e/ou Senha inválidos.')
+        messages.error(request, 'Usuário e/ou Senha inválidos.')
         return redirect('login')
         
     return render(request, 'login.html')
@@ -96,7 +114,7 @@ def login(request):
 
 def dashboard(request):
     if request.user.is_authenticated:
-        pratos = Prato.objects.filter(publicado=True).order_by('-date_prato')
+        pratos = Prato.objects.filter(pessoa=request.user.id).order_by('-date_prato')
     
         contexto = {
         'lista_pratos': pratos,
@@ -104,12 +122,13 @@ def dashboard(request):
         
         return render(request, 'dashboard.html', contexto)
     
+    messages.error(request, 'Você não tem permissão para acessar o Dashboard.')
     return redirect('index')
 
 
 def logout(request):
     auth.logout(request)
-    print('Você realizou o logout')
+    messages.success(request, 'Você realizou o logout')
     return redirect('index')
 
 
@@ -123,11 +142,24 @@ def cria_prato(request):
             rendimento = request.POST['rendimento']
             categoria = request.POST['categoria']
             foto_prato = request.FILES['foto_prato']
+            user = get_object_or_404(User, pk=request.user.id)
             
             
-        
-        
-        
-        
+            prato = Prato.objects.create(
+                nome_prato=nome_prato,
+                ingredientes=ingredientes,
+                modo_preparo=modo_preparo,
+                tempo_preparo=tempo_preparo,
+                rendimento=rendimento,
+                categoria=categoria,
+                foto_prato=foto_prato,
+                pessoa=user
+            )
+            prato.save()
+            messages.success(request, 'Prato criado com sucesso.')
+            return redirect('dashboard')
+                    
         return render(request, 'cria_prato.html')
+    
+    messages.error(request, 'Você não tem permissão para criar pratos.')
     return redirect('index')

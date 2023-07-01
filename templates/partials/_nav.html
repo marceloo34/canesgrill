@@ -27,7 +27,7 @@
                         <ul>
                             {% if user.is_authenticated %}
                                 <li><a href="{% url 'index' %}">Todos os Pratos</a></li>
-                                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                <li><a href="{% url 'dashboard' %}">Meus Pratos</a></li>
                                 <li><a href="{% url 'cria_prato' %}">Criar Prato</a></li>
                                 <li><a href="{% url 'logout' %}">Logout</a></li>
                             {% else %}
