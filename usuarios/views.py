@@ -31,8 +31,15 @@ def cadastro(request):
         senha = request.POST['senha']
         senha2 = request.POST['senha2']
         nome_completo = nome.split()
-        user_name = nome.replace(' ', '')
-        user_name = user_name.lower()
+        if len(nome_completo) > 1:
+                primeiro_nome = nome_completo[0]
+                segundo_nome = nome_completo[-1]
+        else:
+                primeiro_nome = nome_completo[0]
+                segundo_nome = ''
+        nome_user = primeiro_nome + segundo_nome
+        # user_name = nome.replace(' ', '')
+        user_name = nome_user.lower()
         
         if campo_vazio(nome):
             messages.error(request, 'O campo Nome Completo não pode ficar em branco.')
@@ -56,24 +63,10 @@ def cadastro(request):
         
         if User.objects.filter(username=user_name).exists():
             user_name2 = f'{user_name}{randint(1000, 9999)}'
-            if len(nome_completo) > 1:
-                primeiro_nome = nome_completo[0]
-                segundo_nome = nome_completo[-1]
-            else:
-                primeiro_nome = nome_completo[0]
-                segundo_nome = ''
             user = User.objects.create_user(username=user_name2, email=email, password=senha, first_name=primeiro_nome, last_name=segundo_nome)
             user.save()
             messages.info(request, f'Usuário {user_name} já cadastrado. Foi gerado o Usuário {user_name2} automaticamente.')
             return redirect('login')
-
-
-        if len(nome_completo) > 1:
-            primeiro_nome = nome_completo[0]
-            segundo_nome = nome_completo[-1]
-        else:
-            primeiro_nome = nome_completo[0]
-            segundo_nome = ''
         
         user = User.objects.create_user(username=user_name, email=email, password=senha, first_name=primeiro_nome, last_name=segundo_nome)
         user.save()
