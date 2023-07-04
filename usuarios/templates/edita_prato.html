@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Criar Prato{% endblock titulo %}
+
+{% block conteudo %}
+
+<div class="contact-area section-padding-0-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading">
+                    <h3>Edite Seu Prato, {{ user.username }}:</h3>
+                </div>                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>Todos os campos são obrigatórios</p>
+                <div class="contact-form-area">
+                    <form action="{% url 'atualiza_prato' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="prato_id" value="{{ prato.id }}">
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <label for="nome_prato">
+                                    <b>Titulo do Prato</b>
+                                </label>
+                                <input type="text" id="nome_prato" class="form-control" name="nome_prato", placeholder="Maminha no Limão" value="{{ prato.nome_prato }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="ingredientes">
+                                    <b>Ingredientes</b>
+                                </label>
+                                <textarea class="form-control" name="ingredientes" id="ingredientes" cols="30" rows="10" placeholder="Ex. Maminha,&#10;3 Limões,&#10;Sal e temperos" required>{{ prato.ingredientes }}</textarea>
+                            </div>
+                            <div class="col-12">
+                                <label for="modo_preparo">
+                                    <b>Modo de Preparo</b>
+                                </label>
+                                <textarea class="form-control" name="modo_preparo" id="modo_preparo" cols="30" rows="10" placeholder="Ex. Corte saboroso, temperado com lima, sal e diversos temperos, marinando para obter o máximo de suculência." required>{{ prato.modo_preparo }}</textarea>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <label for="tempo_preparo">
+                                    <b>Tempo de Preparo (Minutos)</b>
+                                </label>
+                                <input type="number" class="form-control" name="tempo_preparo", id="tempo_preparo" placeholder="Ex.: 2" value="{{ prato.tempo_preparo }}" required>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <label for="rendimento">
+                                    <b>Rendimento</b>
+                                </label>
+                                <input type="text" class="form-control" name="rendimento" id="rendimento" placeholder="Ex.: Serve 2 Pessoas" value="{{ prato.rendimento }}" required>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <label for="categoria">
+                                    <b>Categoria do Prato</b>
+                                </label>
+                                <input type="text" class="form-control" name="categoria" id="categoria" placeholder="Ex.: Churrasco" value="{{ prato.categoria }}" required>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <label for="foto_prato">
+                                    <b>Foto Utilizada</b>
+                                </label>
+                                <img src="{{ prato.foto_prato.url }}" alt="">
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <label for="foto_prato">
+                                    <b>Nova Foto</b>
+                                </label>
+                                <input type="file" class="form-control" name="foto_prato" id="foto_prato">
+                            </div>
+                            <div class="col-12 text-center">
+                                <button class="btn btn-success mt-30" type="submit">Edite seu Prato</button>
+                                <button class="btn btn-danger mt-30" onclick="cancelar()">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function cancelar(){
+        location.href = "{% url 'dashboard' %}";
+    }
+</script>
+{% endblock %}

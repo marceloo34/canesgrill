@@ -156,3 +156,69 @@ def cria_prato(request):
     
     messages.error(request, 'Você não tem permissão para criar pratos.')
     return redirect('index')
+
+
+def deleta_prato(request, prato_id):
+    if request.user.is_authenticated:
+        try:
+            prato = get_object_or_404(Prato, pk=prato_id)
+            nome_prato = prato.nome_prato
+            prato.delete()        
+            messages.success(request, f'Prato "{nome_prato}" excluído com sucesso.')
+            return redirect('dashboard')
+        except:
+            messages.error(request, 'Prato não encontrado.')
+            return redirect('dashboard')
+    
+    
+    messages.error(request, 'Você não tem permissão para apagar pratos.')
+    return redirect('index')
+
+
+def edita_prato(request, prato_id):
+    if request.user.is_authenticated:
+        try:
+            prato = get_object_or_404(Prato, pk=prato_id)
+        except:
+            messages.error(request, 'Prato não encontrado.')
+            return redirect('dashboard')
+    
+        contexto = {
+            'prato': prato,
+        }
+        
+        return render(request, 'edita_prato.html', contexto)
+    
+    messages.error(request, 'Você não ter permissão para editar pratos.')
+    return redirect('index')
+
+
+def atualiza_prato(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            prato_id = request.POST['prato_id']
+            nome_prato = request.POST['nome_prato'].strip().title()
+            ingredientes = request.POST['ingredientes']
+            modo_preparo = request.POST['modo_preparo']
+            tempo_preparo = request.POST['tempo_preparo']
+            rendimento = request.POST['rendimento']
+            categoria = request.POST['categoria']
+            
+            prato = Prato.objects.get(pk=prato_id)
+            prato.nome_prato = nome_prato
+            prato.ingredientes = ingredientes
+            prato.modo_preparo = modo_preparo
+            prato.tempo_preparo = tempo_preparo
+            prato.rendimento = rendimento
+            prato.categoria = categoria
+            if 'foto_prato' in request.FILES:
+                prato.foto_prato = request.FILES['foto_prato']
+                
+            prato.save()
+            messages.success(request, f'Prato "{nome_prato}" modificado com sucesso.')
+            return redirect('dashboard')
+                    
+        return redirect('dashboard')
+    
+    messages.error(request, 'Você não tem permissão para alterar pratos.')
+    return redirect('index')

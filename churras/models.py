@@ -2,8 +2,6 @@ from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
 
-from pessoas.models import Pessoa
-
 ## Esta classe de models se tornará uma tabela no banco de dados.
 class Prato(models.Model):
     ## serão os campos da tabela (atributos da classe)
