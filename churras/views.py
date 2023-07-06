@@ -1,14 +1,19 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Prato
 
 # Create your views here.
 def index(request):
     pratos = Prato.objects.filter(publicado=True).order_by('-date_prato')
+    qtde_pratos_por_pagina = 3
+    paginator = Paginator(pratos, qtde_pratos_por_pagina)
+    page = request.GET.get('page')
+    lista_pratos_pagina = paginator.get_page(page)
     
     contexto = {
-        'lista_pratos': pratos,
+        'lista_pratos': lista_pratos_pagina,
     }
     return render(request, 'index.html', contexto)
 
